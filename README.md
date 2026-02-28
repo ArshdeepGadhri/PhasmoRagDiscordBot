@@ -24,6 +24,7 @@ ollama run llama3.1:8b
    ```bash
    npm install
    ```
+   *(Ensure you have packages like `discord.js`, `@discordjs/voice`, `dotenv`, `@xenova/transformers`, `ollama`, `google-tts-api`, `prism-media`, and `wavefile` in your package.json).*
 
 3. **Configure Environment Variables**:
    Create a `.env` file in the root directory of the project and add your Discord Bot Token:
