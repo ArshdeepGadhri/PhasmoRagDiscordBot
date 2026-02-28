@@ -22,7 +22,7 @@ let transcriber = null;
         const { pipeline, env } = await import('@xenova/transformers');
         env.allowLocalModels = false;
         transcriber = await pipeline('automatic-speech-recognition', 'Xenova/whisper-tiny.en');
-        console.log("Whisper Model Loaded!");
+        console.log("Whisper Model Loaded\n\n");
     } catch (e) {
         console.error("Failed to load whisper model:", e);
     }
@@ -59,7 +59,8 @@ client.on('messageCreate', async message => {
                 });
 
                 connections.set(message.guild.id, connection);
-                message.reply('Joined voice channel!');
+                const reply = await message.reply('Joined voice channel!');
+                setTimeout(() => reply.delete().catch(console.error), 3000);
 
                 connection.on(VoiceConnectionStatus.Ready, () => {
                     console.log(`Connection ready in guild ${message.guild.id}`);
@@ -164,11 +165,11 @@ client.on('messageCreate', async message => {
                                 }
 
                                 // Keyword detection
-                                if (fullText.includes('bumblebee')) {
+                                if (fullText.includes('jarvis')) {
                                     console.log(`⚙️ Generating response...`);
 
                                     // Extract the actual question/command
-                                    const commandText = fullText.split('bumblebee')[1].trim();
+                                    const commandText = fullText.split('jarvis')[1].trim();
 
                                     const promptPath = path.join(__dirname, 'prompt.txt');
                                     let SYSTEM_PROMPT = '';
@@ -188,7 +189,7 @@ client.on('messageCreate', async message => {
                                     });
 
                                     let aiReply = response.message.content;
-                                    console.log(`🤖 [Bumblebee]: ${aiReply}\n`);
+                                    console.log(`🤖 [Jarvis]: ${aiReply}\n`);
 
                                     // Add 'over' to the end of the spoken message
                                     //aiReply += " over.";
@@ -297,9 +298,11 @@ client.on('messageCreate', async message => {
         if (connection) {
             connection.destroy();
             connections.delete(message.guild.id);
-            message.reply('Left voice channel!');
+            const reply = await message.reply('Left voice channel!');
+            setTimeout(() => reply.delete().catch(console.error), 3000);
         } else {
-            message.reply('Not currently in a voice channel!');
+            const reply = await message.reply('Not currently in a voice channel!');
+            setTimeout(() => reply.delete().catch(console.error), 3000);
         }
     }
 });

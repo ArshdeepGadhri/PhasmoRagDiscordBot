@@ -1,6 +1,6 @@
 # Discord Phasmophobia Transcriber Bot
 
-A Discord bot that joins voice channels, listens to users, transcribes their speech using Whisper (locally via `@xenova/transformers`), and responds as "PhasMaid" (a Phasmophobia helper) when the wake word **"bumblebee"** is spoken. The AI responses are generated locally using **Ollama** and the **llama3.1:8b** model, then played back in the voice channel using Google TTS.
+A Discord bot that joins voice channels, listens to users, transcribes their speech using Whisper (locally via `@xenova/transformers`), and responds as "PhasMaid" (a Phasmophobia helper) when the wake word **"jarvis"** is spoken. The AI responses are generated locally using **Ollama** and the **llama3.1:8b** model, then played back in the voice channel using Google TTS.
 
 ## Prerequisites
 
@@ -45,6 +45,6 @@ ollama run llama3.1:8b
 
 - Type `!join` in any text channel while you are connected to a voice channel. The bot will join your voice channel.
 - Speak naturally. The bot monitors for speech, processes the audio through Whisper, and logs the transcriptions to the console.
-- Say the wake word **"bumblebee"** followed by a Phasmophobia-related question (e.g., *"Bumblebee, what evidence does a demon have?"*).
+- Say the wake word **"jarvis"** followed by a Phasmophobia-related question (e.g., *"Jarvis, what evidence does a demon have?"*).
 - The bot will generate a Phasmophobia-themed answer using `llama3.1:8b`, chunk the text, and read it out loud in the voice channel.
 - Type `!leave` to make the bot disconnect from the voice channel.
