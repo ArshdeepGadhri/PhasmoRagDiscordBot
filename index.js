@@ -59,8 +59,7 @@ client.on('messageCreate', async message => {
                 });
 
                 connections.set(message.guild.id, connection);
-                const reply = await message.reply('Joined voice channel!');
-                setTimeout(() => reply.delete().catch(console.error), 3000);
+                message.reply('Joined voice channel!');
 
                 connection.on(VoiceConnectionStatus.Ready, () => {
                     console.log(`Connection ready in guild ${message.guild.id}`);
@@ -87,13 +86,16 @@ client.on('messageCreate', async message => {
                             return;
                         }
 
-                        console.log(`User ${userId} started speaking`);
+                        const member = message.guild.members.cache.get(userId);
+                        const displayName = member ? member.displayName : userId;
 
-                        // Wait for 2.5 seconds of silence (debounce) before capturing a full phrase to accommodate for breathing pauses
+                        console.log(`${displayName} started speaking`);
+
+                        // Wait for 1 second of silence (debounce) before capturing a full phrase to accommodate for breathing pauses
                         const audioStream = receiver.subscribe(userId, {
                             end: {
                                 behavior: EndBehaviorType.AfterSilence,
-                                duration: 2500, // Increased to 2.5 seconds
+                                duration: 1000,
                             },
                         });
 
@@ -161,7 +163,7 @@ client.on('messageCreate', async message => {
 
                                 // Always output the transcription so we can see what the bot heard
                                 if (output.text.trim()) {
-                                    console.log(`\n🗣️ [USER]: ${output.text.trim()}`);
+                                    console.log(`\n🗣️ [${displayName}]: ${output.text.trim()}`);
                                 }
 
                                 // Keyword detection
@@ -189,7 +191,7 @@ client.on('messageCreate', async message => {
                                     });
 
                                     let aiReply = response.message.content;
-                                    console.log(`🤖 [Jarvis]: ${aiReply}\n`);
+                                    console.log(`🤖 [Bumblebee]: ${aiReply}\n`);
 
                                     // Add 'over' to the end of the spoken message
                                     //aiReply += " over.";
@@ -232,7 +234,7 @@ client.on('messageCreate', async message => {
                                                     '-analyzeduration', '0',
                                                     '-loglevel', '0',
                                                     '-i', audioUrl,
-                                                    '-filter:a', 'atempo=1.25', // Change this value to adjust speed (e.g., 1.5, 1.75)
+                                                    '-filter:a', 'atempo=1.15', // Change this value to adjust speed (e.g., 1.5, 1.75)
                                                     '-f', 's16le',
                                                     '-ar', '48000',
                                                     '-ac', '2'
@@ -298,11 +300,9 @@ client.on('messageCreate', async message => {
         if (connection) {
             connection.destroy();
             connections.delete(message.guild.id);
-            const reply = await message.reply('Left voice channel!');
-            setTimeout(() => reply.delete().catch(console.error), 3000);
+            message.reply('Left voice channel!');
         } else {
-            const reply = await message.reply('Not currently in a voice channel!');
-            setTimeout(() => reply.delete().catch(console.error), 3000);
+            message.reply('Not currently in a voice channel!');
         }
     }
 });
