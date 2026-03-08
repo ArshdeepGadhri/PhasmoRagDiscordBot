@@ -184,7 +184,7 @@ client.on('messageCreate', async message => {
 
                                     // Send to Ollama
                                     const response = await ollama.chat({
-                                        model: 'llama3.1:8b',
+                                        model: 'qwen3.5:9b',
                                         messages: [
                                             { role: "system", content: SYSTEM_PROMPT },
                                             { role: 'user', content: `Answer in 1-3 sentences max. ${commandText}` }],
